@@ -8,20 +8,20 @@ export default function ScriptBox() {
     const [copied, setCopied] = useState(false);
 
     const scripts = {
-        FR: `Bonjour ! Je m'appelle [Ton Prénom], je suis étudiant en informatique à l'Université de Caen (Campus 2).
+        FR: `Bonjour ! Je m'appelle Julius, je suis étudiant en informatique à l'Université de Caen.
 
-Je vous contacte car je réalise des sites vitrines pour dynamiser les entreprises locales de la région. J'ai pris la liberté de créer une maquette gratuite pour [Nom de l'Entreprise] afin de vous montrer ce qu'un site moderne et rapide pourrait apporter à votre activité.
+Je vous contacte car je réalise des sites internet vitrines pour dynamiser les entreprises locales. J'ai pris la liberté de créer une maquette gratuite pour vous afin de vous montrer ce qu'un site moderne et rapide pourrait apporter à votre activité.
 
 Est-ce que je peux vous envoyer le lien ici pour avoir votre avis ? C'est totalement gratuit et sans engagement, juste pour vous montrer le rendu.
 
-Bonne journée, [Ton Prénom]`,
-        EN: `Hi there! My name is [Your Name], I'm a Computer Science student currently building modern websites for local independent businesses.
+Bonne journée, Julius`,
+        EN: `Hi there! My name is Julius, I'm a first-year Computer Science student from France currently building modern websites for local independent businesses.
 
-I was looking at your business, [Business Name], and noticed you don't have a mobile-friendly site yet. As part of my portfolio project, I’ve actually built a free custom demo for you to show you what a high-end site would look like for your brand.
+I was looking at your business and noticed you don't have a mobile-friendly website yet. As part of my portfolio project, I’ve actually built a free custom demo for you to show you what a high-end site would look like for your brand.
 
 Could I send you the link over to get your thoughts? No strings attached, I'd just love to see what you think!
 
-Best regards, [Your Name]`
+Best regards, Julius`
     };
 
     const handleCopy = () => {
