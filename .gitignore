@@ -1,0 +1,16 @@
+# Environment Variables
+.env
+.env.*
+.env.local
+
+# Next.js / Node
+node_modules/
+.next/
+
+# Data
+*.csv
+hot_leads.csv
+
+# Python
+__pycache__/
+*.pyc
