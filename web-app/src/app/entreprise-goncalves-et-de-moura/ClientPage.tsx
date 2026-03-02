@@ -2,13 +2,13 @@
 
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
-import { 
-    Phone, 
-    MapPin, 
-    ChevronRight, 
-    CheckCircle2, 
-    Building2, 
-    Hammer, 
+import {
+    Phone,
+    MapPin,
+    ChevronRight,
+    CheckCircle2,
+    Building2,
+    Hammer,
     MessageSquare,
     ArrowRight
 } from "lucide-react";
@@ -28,7 +28,7 @@ function Counter({ end, suffix = "", duration = 2000 }: { end: number, suffix?: 
                 const ms = 16;
                 const steps = duration / ms;
                 const step = end / steps;
-                
+
                 const timer = setInterval(() => {
                     start += step;
                     if (start >= end) {
@@ -42,11 +42,11 @@ function Counter({ end, suffix = "", duration = 2000 }: { end: number, suffix?: 
                 return () => clearInterval(timer);
             }
         });
-        
+
         if (ref.current) {
             observer.observe(ref.current);
         }
-        
+
         return () => observer.disconnect();
     }, [end, duration]);
 
@@ -67,17 +67,17 @@ export default function ClientPage() {
     };
 
     return (
-        <main className="min-h-screen bg-stone-50 text-slate-900 font-sans selection:bg-slate-800 selection:text-white pb-20 md:pb-0">
+        <main className="min-h-screen bg-stone-50 text-slate-900 font-sans selection:bg-slate-800 selection:text-white">
             {/* Navbar */}
-            <nav className="fixed w-full z-50 bg-white/95 backdrop-blur-sm border-b border-slate-200 shadow-sm">
+            <nav className="fixed w-full z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800 shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-                    <span className="font-serif font-bold text-xl text-slate-900 tracking-tight">
-                        Goncalves <span className="text-slate-500">&</span> de Moura
+                    <span className="font-serif font-bold text-xl text-white tracking-tight">
+                        Goncalves <span className="text-amber-500">&</span> de Moura
                     </span>
                     <div className="hidden md:flex items-center gap-8">
-                        <a href="#services" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Services</a>
-                        <a href="#devis" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Devis gratuit</a>
-                        <a href={`tel:${PHONE_NUMBER.replace(/\s/g, '')}`} className="bg-slate-900 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-800 transition-all flex items-center gap-2">
+                        <a href="#services" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">Services</a>
+                        <a href="#devis" className="text-sm font-medium text-slate-300 hover:text-white transition-colors">Devis gratuit</a>
+                        <a href={`tel:${PHONE_NUMBER.replace(/\s/g, '')}`} className="bg-white text-slate-900 px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-stone-100 transition-all flex items-center gap-2">
                             <Phone className="w-4 h-4" />
                             {PHONE_NUMBER}
                         </a>
@@ -86,9 +86,9 @@ export default function ClientPage() {
             </nav>
 
             {/* Sticky Bottom-Right CTA */}
-            <a 
-                href={WHATSAPP_LINK} 
-                target="_blank" 
+            <a
+                href={WHATSAPP_LINK}
+                target="_blank"
                 rel="noreferrer"
                 className="fixed bottom-6 right-6 z-50 flex items-center justify-center p-4 bg-slate-900 text-white rounded-full shadow-lg hover:bg-slate-800 transition-transform transform hover:scale-105 border border-slate-700 group md:hidden"
             >
@@ -112,16 +112,16 @@ export default function ClientPage() {
                         <MapPin className="w-3 h-3" />
                         Basé à Brest, Finistère
                     </div>
-                    
+
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight mb-6 mt-4">
-                        L'Excellence de la Pierre, <br/>
+                        L'Excellence de la Pierre, <br />
                         <span className="text-stone-300">la Force du Béton.</span>
                     </h1>
-                    
+
                     <p className="text-base md:text-lg text-stone-200 font-light max-w-2xl mb-10 leading-relaxed">
                         Entreprise Goncalves et de Moura. Votre partenaire local de confiance pour le gros œuvre et la rénovation.
                     </p>
-                    
+
                     <div className="flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto">
                         <a href="#devis" className="bg-white text-slate-900 px-6 py-3 rounded-lg text-base font-semibold transition-all hover:bg-stone-100 flex items-center justify-center gap-2 group shadow-lg">
                             Demander un Devis
@@ -239,7 +239,7 @@ export default function ClientPage() {
                             <p className="text-slate-400 mb-8 text-sm leading-relaxed">
                                 Obtenez un devis estimatif gratuit et rapide. Décrivez-nous vos besoins, notre équipe vous recontactera sous 48h.
                             </p>
-                            
+
                             <div className="space-y-6">
                                 <div className="flex items-center gap-4">
                                     <div className="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center">
@@ -261,7 +261,7 @@ export default function ClientPage() {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div className="w-full md:w-1/2 bg-white text-slate-900 rounded-2xl p-8 shadow-xl">
                             <form onSubmit={handleFormSubmit} className="flex flex-col h-full">
                                 {/* Progress header */}
@@ -277,13 +277,13 @@ export default function ClientPage() {
                                 {formStep === 1 && (
                                     <div className="space-y-4 animate-in fade-in duration-300">
                                         <h4 className="text-lg font-bold text-slate-900">Décrivez votre projet</h4>
-                                        <textarea 
+                                        <textarea
                                             required
                                             rows={4}
                                             className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:border-slate-400 transition-colors"
                                             placeholder="Ex: Rénovation d'un mur en pierre..."
                                             value={formData.description}
-                                            onChange={e => setFormData({...formData, description: e.target.value})}
+                                            onChange={e => setFormData({ ...formData, description: e.target.value })}
                                         />
                                     </div>
                                 )}
@@ -291,13 +291,13 @@ export default function ClientPage() {
                                 {formStep === 2 && (
                                     <div className="space-y-4 animate-in fade-in duration-300">
                                         <h4 className="text-lg font-bold text-slate-900">Localisation</h4>
-                                        <input 
+                                        <input
                                             required
                                             type="text"
                                             className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:border-slate-400 transition-colors"
                                             placeholder="Ex: 29200 Brest"
                                             value={formData.location}
-                                            onChange={e => setFormData({...formData, location: e.target.value})}
+                                            onChange={e => setFormData({ ...formData, location: e.target.value })}
                                         />
                                     </div>
                                 )}
@@ -305,29 +305,29 @@ export default function ClientPage() {
                                 {formStep === 3 && (
                                     <div className="space-y-4 animate-in fade-in duration-300">
                                         <h4 className="text-lg font-bold text-slate-900">Vos coordonnées</h4>
-                                        <input 
+                                        <input
                                             required
                                             type="text"
                                             className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:border-slate-400 transition-colors"
                                             placeholder="06 XX XX XX XX ou Email"
                                             value={formData.contact}
-                                            onChange={e => setFormData({...formData, contact: e.target.value})}
+                                            onChange={e => setFormData({ ...formData, contact: e.target.value })}
                                         />
                                     </div>
                                 )}
 
                                 <div className="mt-8 pt-6 border-t border-slate-100 flex justify-between items-center">
                                     {formStep > 1 ? (
-                                        <button 
-                                            type="button" 
+                                        <button
+                                            type="button"
                                             onClick={() => setFormStep(s => s - 1)}
                                             className="text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors"
                                         >
                                             Retour
                                         </button>
                                     ) : <div></div>}
-                                    
-                                    <button 
+
+                                    <button
                                         type="submit"
                                         className="bg-slate-900 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-800 transition-colors flex items-center gap-2"
                                     >
@@ -346,7 +346,7 @@ export default function ClientPage() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div>
                         <span className="text-lg font-serif font-bold text-white mb-4 block">
-                            Goncalves <span className="text-slate-500">&</span> de Moura
+                            Goncalves <span className="text-amber-500">&</span> de Moura
                         </span>
                         <p className="text-sm leading-relaxed max-w-xs">
                             Entreprise générale de bâtiment à Brest. Excellence de la conception à la réalisation.
