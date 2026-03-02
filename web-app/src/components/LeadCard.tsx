@@ -3,6 +3,7 @@
 import { Lead } from "@/lib/types";
 import { CheckIcon, ArrowUturnLeftIcon } from "@heroicons/react/20/solid";
 import { DevicePhoneMobileIcon, ChatBubbleLeftRightIcon, MapPinIcon, PhoneIcon } from "@heroicons/react/24/outline";
+import { parseSpintax, RAW_SCRIPTS } from "./ScriptBox";
 
 interface LeadCardProps {
     lead: Lead;
@@ -77,6 +78,16 @@ export default function LeadCard({
     const { city, country } = getLocationData(lead.address);
     const countryFlag = country.toLowerCase().includes("france") ? "🇫🇷" : country.toLowerCase().includes("kingdom") || country.toLowerCase().includes("uk") ? "🇬🇧" : "";
 
+    const handleContactClick = () => {
+        if (!lead.status || lead.status === "pending") {
+            onUpdateStatus(lead.id, "contacted");
+        }
+        const isUK = country.toLowerCase().includes("kingdom") || country.toLowerCase().includes("uk");
+        const lang = isUK ? "EN" : "FR";
+        const script = parseSpintax(RAW_SCRIPTS[lang]);
+        navigator.clipboard.writeText(script).catch(err => console.error("Could not copy script: ", err));
+    };
+
     return (
         <div
             className="group relative bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-5 hover:border-slate-300 dark:hover:border-slate-700 transition-colors animate-slide-up flex flex-col"
@@ -134,11 +145,7 @@ export default function LeadCard({
                                 href={getWhatsAppLink(lead.phone_number, country)}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                onClick={() => {
-                                    if (!lead.status || lead.status === "pending") {
-                                        onUpdateStatus(lead.id, "contacted");
-                                    }
-                                }}
+                                onClick={handleContactClick}
                                 className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-semibold rounded-lg bg-[#25D366] hover:bg-[#20bd5a] text-white transition-colors cursor-pointer"
                             >
                                 <ChatBubbleLeftRightIcon className="w-4 h-4" />
@@ -146,11 +153,7 @@ export default function LeadCard({
                             </a>
                             <a
                                 href={getSMSLink(lead.phone_number, country)}
-                                onClick={() => {
-                                    if (!lead.status || lead.status === "pending") {
-                                        onUpdateStatus(lead.id, "contacted");
-                                    }
-                                }}
+                                onClick={handleContactClick}
                                 className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
                             >
                                 <ChatBubbleLeftRightIcon className="w-4 h-4 hidden xl:block" />

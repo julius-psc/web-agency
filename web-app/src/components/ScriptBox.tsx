@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { DocumentDuplicateIcon, CheckIcon, ArrowPathIcon } from "@heroicons/react/20/solid";
 
-const parseSpintax = (text: string) => {
+export const parseSpintax = (text: string) => {
     const spintaxRegex = /\{([^}]+)\}/g;
     return text.replace(spintaxRegex, (match, contents) => {
         const choices = contents.split('|');
@@ -11,7 +11,7 @@ const parseSpintax = (text: string) => {
     });
 };
 
-const RAW_SCRIPTS = {
+export const RAW_SCRIPTS = {
     FR: `{Bonjour !|Bonjour,|Salut !|Hello} {Je m'appelle|Je suis|Moi c'est} Julius, je suis {étudiant en informatique|étudiant en développement web} à {l'Université de Caen|Caen}.
 
 {Je vous contacte car|Je vous écris car|Je me permets de vous contacter car} je réalise {des sites internet vitrines|des sites vitrines modernes|des sites web} pour {dynamiser les entreprises locales|aider les entreprises locales|mettre en avant les petites entreprises}. {J'ai pris la liberté de|J'ai décidé de|J'ai pris l'initiative de} créer une maquette gratuite pour vous {afin de vous montrer|pour vous montrer|pour vous illustrer} ce qu'un site {moderne et rapide|rapide et professionnel|moderne et performant} pourrait apporter à votre activité.
