@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
                         "N/A",
                     address: place.formattedAddress || "N/A",
                     niche: niche,
-                    contacted: false,
+                    status: "pending",
                 }));
 
             allHotLeads.push(...hotLeadsForCity);

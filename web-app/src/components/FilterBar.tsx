@@ -6,8 +6,8 @@ interface FilterBarProps {
     niches: string[];
     selectedNiche: string;
     onNicheChange: (niche: string) => void;
-    contactedFilter: string;
-    onContactedChange: (filter: string) => void;
+    statusFilter: string;
+    onStatusChange: (filter: string) => void;
     searchQuery: string;
     onSearchChange: (query: string) => void;
 }
@@ -16,14 +16,14 @@ export default function FilterBar({
     niches,
     selectedNiche,
     onNicheChange,
-    contactedFilter,
-    onContactedChange,
+    statusFilter,
+    onStatusChange,
     searchQuery,
     onSearchChange,
 }: FilterBarProps) {
     return (
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm flex flex-col sm:flex-row gap-4">
-            <div className="relative flex-1 group">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm flex flex-col gap-4">
+            <div className="relative w-full group">
                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-indigo-500 transition-colors">
                     <MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />
                 </div>
@@ -36,8 +36,8 @@ export default function FilterBar({
                 />
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3">
-                <div className="relative group min-w-[160px]">
+            <div className="flex flex-col lg:flex-row gap-3 justify-between">
+                <div className="relative group min-w-[200px]">
                     <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-indigo-500 transition-colors">
                         <FunnelIcon className="h-4 w-4" aria-hidden="true" />
                     </div>
@@ -63,13 +63,16 @@ export default function FilterBar({
                 <div className="flex bg-slate-100 dark:bg-slate-900/40 rounded-lg p-1 w-full sm:w-auto overflow-x-auto shrink-0 border border-slate-200 dark:border-slate-800">
                     {[
                         { value: "", label: "All" },
-                        { value: "false", label: "Pending" },
-                        { value: "true", label: "Done" },
+                        { value: "pending", label: "Pending" },
+                        { value: "contacted", label: "Contacted" },
+                        { value: "stage 1 - positive reply", label: "Stage 1" },
+                        { value: "stage 2 - negotiation", label: "Stage 2" },
+                        { value: "payment completed", label: "Completed" },
                     ].map((option) => (
                         <button
                             key={option.value}
-                            onClick={() => onContactedChange(option.value)}
-                            className={`px-4 py-1.5 rounded-md text-xs font-semibold transition-colors duration-200 cursor-pointer whitespace-nowrap flex-1 sm:flex-none ${contactedFilter === option.value
+                            onClick={() => onStatusChange(option.value)}
+                            className={`px-4 py-1.5 rounded-md text-xs font-semibold transition-colors duration-200 cursor-pointer whitespace-nowrap flex-1 sm:flex-none ${statusFilter === option.value
                                 ? "bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm border border-slate-200/50 dark:border-slate-700/50"
                                 : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
                                 }`}

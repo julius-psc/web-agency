@@ -17,7 +17,7 @@ export default function Home() {
   const [totalPages, setTotalPages] = useState(1);
   const [niches, setNiches] = useState<string[]>([]);
   const [selectedNiche, setSelectedNiche] = useState("");
-  const [contactedFilter, setContactedFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [statsContactedCount, setStatsContactedCount] = useState(0);
@@ -34,7 +34,7 @@ export default function Home() {
       });
 
       if (selectedNiche) params.set("niche", selectedNiche);
-      if (contactedFilter) params.set("contacted", contactedFilter);
+      if (statusFilter) params.set("status", statusFilter);
       if (searchQuery) params.set("search", searchQuery);
 
       const response = await fetch(`/api/leads?${params}`);
@@ -48,7 +48,7 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  }, [currentPage, selectedNiche, contactedFilter, searchQuery]);
+  }, [currentPage, selectedNiche, statusFilter, searchQuery]);
 
   const fetchNiches = useCallback(async () => {
     try {
@@ -69,7 +69,7 @@ export default function Home() {
 
       // Fetch contacted count
       const contactedRes = await fetch(
-        "/api/leads?per_page=1&contacted=true"
+        "/api/leads?per_page=1&status=contacted"
       );
       const contactedData = await contactedRes.json();
       setStatsContactedCount(contactedData?.total || 0);
@@ -97,8 +97,8 @@ export default function Home() {
     setCurrentPage(1);
   };
 
-  const handleContactedChange = (filter: string) => {
-    setContactedFilter(filter);
+  const handleStatusChange = (filter: string) => {
+    setStatusFilter(filter);
     setCurrentPage(1);
   };
 
@@ -107,30 +107,34 @@ export default function Home() {
     setCurrentPage(1);
   };
 
-  const handleToggleContacted = async (id: string, contacted: boolean) => {
+  const handleUpdateStatus = async (id: string, status: string) => {
     try {
+      const oldLead = leads.find(l => l.id === id);
+      const oldStatus = oldLead?.status;
+
       // Optimistic update
       setLeads((prev) =>
         prev.map((lead) =>
-          lead.id === id ? { ...lead, contacted } : lead
+          lead.id === id ? { ...lead, status } : lead
         )
       );
-      setStatsContactedCount((prev) => (contacted ? prev + 1 : prev - 1));
+
+      // Adjust contacted count optimistically if needed
+      if (oldStatus !== "contacted" && status === "contacted") {
+        setStatsContactedCount(prev => prev + 1);
+      } else if (oldStatus === "contacted" && status !== "contacted") {
+        setStatsContactedCount(prev => prev - 1);
+      }
 
       await fetch("/api/leads", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, contacted }),
+        body: JSON.stringify({ id, status }),
       });
     } catch (error) {
-      console.error("Error updating lead:", error);
+      console.error("Error updating lead status:", error);
       // Revert if error
-      setLeads((prev) =>
-        prev.map((lead) =>
-          lead.id === id ? { ...lead, contacted: !contacted } : lead
-        )
-      );
-      setStatsContactedCount((prev) => (!contacted ? prev + 1 : prev - 1));
+      fetchLeads(); // Simplest way to revert safely
     }
   };
 
@@ -188,8 +192,8 @@ export default function Home() {
               niches={niches}
               selectedNiche={selectedNiche}
               onNicheChange={handleNicheChange}
-              contactedFilter={contactedFilter}
-              onContactedChange={handleContactedChange}
+              statusFilter={statusFilter}
+              onStatusChange={handleStatusChange}
               searchQuery={searchQuery}
               onSearchChange={handleSearchChange}
             />
@@ -230,7 +234,7 @@ export default function Home() {
                   <LeadCard
                     key={lead.id}
                     lead={lead}
-                    onToggleContacted={handleToggleContacted}
+                    onUpdateStatus={handleUpdateStatus}
                     index={index}
                   />
                 ))}

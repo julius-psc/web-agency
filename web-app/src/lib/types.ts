@@ -4,7 +4,7 @@ export interface Lead {
     phone_number: string;
     address: string;
     niche: string;
-    contacted: boolean;
+    status: string;
     created_at: string;
 }
 

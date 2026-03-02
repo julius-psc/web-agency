@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
         const page = parseInt(searchParams.get("page") || "1");
         const perPage = parseInt(searchParams.get("per_page") || "12");
         const niche = searchParams.get("niche") || "";
-        const contacted = searchParams.get("contacted");
+        const status = searchParams.get("status");
         const search = searchParams.get("search") || "";
 
         const from = (page - 1) * perPage;
@@ -33,10 +33,8 @@ export async function GET(request: NextRequest) {
             query = query.eq("niche", niche);
         }
 
-        if (contacted === "true") {
-            query = query.eq("contacted", true);
-        } else if (contacted === "false") {
-            query = query.eq("contacted", false);
+        if (status) {
+            query = query.eq("status", status);
         }
 
         if (search) {
@@ -74,11 +72,11 @@ export async function GET(request: NextRequest) {
     }
 }
 
-// PATCH - Toggle contacted status
+// PATCH - Update lead status
 export async function PATCH(request: NextRequest) {
     try {
         const body = await request.json();
-        const { id, contacted } = body;
+        const { id, status } = body;
 
         if (!id) {
             return NextResponse.json(
@@ -90,7 +88,7 @@ export async function PATCH(request: NextRequest) {
         const supabase = getSupabase();
         const { data, error } = await supabase
             .from("leads")
-            .update({ contacted })
+            .update({ status })
             .eq("id", id)
             .select()
             .single();
