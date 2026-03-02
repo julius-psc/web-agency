@@ -32,8 +32,27 @@ export default function LeadCard({
         return `https://wa.me/${cleaned.replace("+", "")}`;
     };
 
-    const getSMSLink = (phone: string) => `sms:${phone}`;
-    const getCallLink = (phone: string) => `tel:${phone}`;
+    const getFormattedPhoneNumber = (phone: string, countryStr: string) => {
+        let cleaned = phone.trim();
+        if (cleaned.startsWith("0")) {
+            const isUK = countryStr.toLowerCase().includes("kingdom") || countryStr.toLowerCase().includes("uk");
+            if (isUK) {
+                return "+44 " + cleaned.substring(1);
+            } else {
+                return "+33 " + cleaned.substring(1);
+            }
+        }
+        return cleaned;
+    };
+
+    const getSMSLink = (phone: string, countryStr: string) => {
+        const formatted = getFormattedPhoneNumber(phone, countryStr).replace(/[\s.\-()]/g, "");
+        return `sms:${formatted}`;
+    };
+    const getCallLink = (phone: string, countryStr: string) => {
+        const formatted = getFormattedPhoneNumber(phone, countryStr).replace(/[\s.\-()]/g, "");
+        return `tel:${formatted}`;
+    };
 
     const isMobile = (phone: string) => {
         const cleaned = phone.replace(/[\s.\-()]/g, "");
@@ -96,7 +115,7 @@ export default function LeadCard({
                         ) : (
                             <PhoneIcon className="w-4 h-4 text-slate-400 group-hover/item:text-slate-600 dark:group-hover/item:text-slate-200 transition-colors" />
                         )}
-                        <p className="font-mono font-medium">{lead.phone_number}</p>
+                        <p className="font-mono font-medium">{getFormattedPhoneNumber(lead.phone_number, country)}</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 group/item">
@@ -115,13 +134,23 @@ export default function LeadCard({
                                 href={getWhatsAppLink(lead.phone_number, country)}
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                onClick={() => {
+                                    if (!lead.status || lead.status === "pending") {
+                                        onUpdateStatus(lead.id, "contacted");
+                                    }
+                                }}
                                 className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-semibold rounded-lg bg-[#25D366] hover:bg-[#20bd5a] text-white transition-colors cursor-pointer"
                             >
                                 <ChatBubbleLeftRightIcon className="w-4 h-4" />
                                 WhatsApp
                             </a>
                             <a
-                                href={getSMSLink(lead.phone_number)}
+                                href={getSMSLink(lead.phone_number, country)}
+                                onClick={() => {
+                                    if (!lead.status || lead.status === "pending") {
+                                        onUpdateStatus(lead.id, "contacted");
+                                    }
+                                }}
                                 className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-semibold rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
                             >
                                 <ChatBubbleLeftRightIcon className="w-4 h-4 hidden xl:block" />
@@ -130,7 +159,7 @@ export default function LeadCard({
                         </>
                     ) : (
                         <a
-                            href={getCallLink(lead.phone_number)}
+                            href={getCallLink(lead.phone_number, country)}
                             className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-semibold rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:opacity-90 transition-colors cursor-pointer"
                         >
                             <PhoneIcon className="w-4 h-4" />
@@ -144,10 +173,10 @@ export default function LeadCard({
                         value={lead.status || "pending"}
                         onChange={(e) => onUpdateStatus(lead.id, e.target.value)}
                         className={`appearance-none w-full flex items-center justify-between h-9 pl-3 pr-8 rounded-lg outline-none transition-all cursor-pointer text-xs font-semibold border-0 ring-1 ring-inset focus:ring-2 focus:ring-inset ${lead.status === "payment completed"
-                                ? "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 ring-emerald-200 dark:ring-emerald-500/20 focus:ring-emerald-500"
-                                : lead.status === "pending"
-                                    ? "bg-slate-50 dark:bg-slate-800/40 text-slate-600 dark:text-slate-300 ring-slate-200 dark:ring-slate-700 focus:ring-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
-                                    : "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 ring-indigo-200 dark:ring-indigo-500/20 focus:ring-indigo-500"
+                            ? "bg-emerald-50 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 ring-emerald-200 dark:ring-emerald-500/20 focus:ring-emerald-500"
+                            : lead.status === "pending"
+                                ? "bg-slate-50 dark:bg-slate-800/40 text-slate-600 dark:text-slate-300 ring-slate-200 dark:ring-slate-700 focus:ring-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                                : "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 ring-indigo-200 dark:ring-indigo-500/20 focus:ring-indigo-500"
                             }`}
                         title="Update Status"
                     >

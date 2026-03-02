@@ -13,13 +13,13 @@ create table if not exists leads (
   phone_number text not null unique,
   address text,
   niche text not null,
-  contacted boolean default false,
+  status text default 'pending',
   created_at timestamptz default now()
 );
 
 -- Index for faster queries
 create index if not exists idx_leads_niche on leads (niche);
-create index if not exists idx_leads_contacted on leads (contacted);
+create index if not exists idx_leads_status on leads (status);
 create index if not exists idx_leads_created_at on leads (created_at desc);
 
 -- Enable Row Level Security (RLS)
