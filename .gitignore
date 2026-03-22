@@ -14,3 +14,5 @@ hot_leads.csv
 # Python
 __pycache__/
 *.pyc
+.vercel
+.env*.local
